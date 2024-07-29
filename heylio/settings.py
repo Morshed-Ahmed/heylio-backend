@@ -14,6 +14,8 @@ SECRET_KEY = 'django-insecure-=l7-9)2$nwy&-m#sion_)l43a2j403q96l@98-vcc@sm9#nj5=
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    'https://heylio-backend.onrender.com', 'https://*.127.0.0.1']
 
 
 # Application definition
