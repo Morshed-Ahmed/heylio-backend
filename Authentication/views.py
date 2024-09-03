@@ -53,3 +53,25 @@ def logout_view(request):
     request.auth.delete()  # টোকেন মুছে ফেলুন
     logout(request)
     return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
+
+
+
+
+from rest_framework import serializers
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
+# প্রোফাইল ভিউ
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def profile_view(request):
+    user = request.user
+    serializer = ProfileSerializer(user)
+    return Response(serializer.data)
