@@ -21,6 +21,8 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
+    'daphne',
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
@@ -29,10 +31,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
-    'Authentication'
+    'Authentication',
+    'PrivateChat'
     
 ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -51,13 +54,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 # Allow all origins (useful for development, but consider more specific settings for production)
 CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ORIGIN_ALLOW_ALL = True
 
 # Or, specify allowed origins (recommended for production)
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://yourapp.example.com",
+    "exp://192.168.1.118:8081",
+    "http://localhost:8081"
 ]
 
 # For React Native, you might need to allow the development server's address:
@@ -86,7 +94,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'heylio.wsgi.application'
+# WSGI_APPLICATION = 'heylio.wsgi.application'
+ASGI_APPLICATION = 'heylio.asgi.application'
 
 
 # Database
