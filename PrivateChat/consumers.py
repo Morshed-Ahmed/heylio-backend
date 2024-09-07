@@ -4,6 +4,10 @@ from channels.exceptions import StopConsumer
 from asgiref.sync import async_to_sync
 import json
 
+from .models import Room,Message
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError,PermissionDenied
+
 class PrivateChatConsumer(SyncConsumer):
     def websocket_connect(self, event):
         print('User Active', event)
@@ -27,6 +31,39 @@ class PrivateChatConsumer(SyncConsumer):
     def websocket_receive(self, event):
         text_data = event.get('text', '')
         print(f"Message Received: {text_data}")
+
+        data = json.loads(event['text'])
+        
+
+        room_id = data.get('room_id')
+        user_name = data.get('user')
+        content = data.get('message')
+
+        # print('json message', content)
+        # print('json user', user_name)
+        # print('json room_id', room_id)
+
+        try:
+            room = Room.objects.get(room_id=room_id)
+            user = User.objects.get(username=user_name)
+            # print('kl',user)
+        except Room.DoesNotExist:
+            print("Room does not exist")
+            return
+        except User.DoesNotExist:
+            print("User does not exist")
+            return
+
+        try:
+            # মেসেজ তৈরি করা এবং রুমের সাথে যুক্ত করা
+            message = Message.objects.create(room=room, sender=user, content=content)
+            print(room, user, content)
+        except ValidationError as e:
+            print(f"Validation error: {e}")
+            return
+        except PermissionDenied as e:
+            print(f"Permission denied: {e}")
+            return
 
         # বার্তা গ্রুপে প্রেরণ করা
         async_to_sync(self.channel_layer.group_send)(
