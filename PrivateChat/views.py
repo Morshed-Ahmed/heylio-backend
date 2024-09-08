@@ -1,8 +1,9 @@
-from rest_framework import status
+from rest_framework import status,generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Room, Message
 from rest_framework.permissions import IsAuthenticated
+from .serializers import RoomSerializer
 
 class RoomMessagesView(APIView):
     permission_classes = [IsAuthenticated]  # নিশ্চিত করুন যে ব্যবহারকারী লগইন করেছে
@@ -27,3 +28,16 @@ class RoomMessagesView(APIView):
         except Message.DoesNotExist:
             return Response({'error': 'No messages found for this room'}, status=status.HTTP_404_NOT_FOUND)
 
+class RoomListCreateView(generics.ListCreateAPIView):
+    serializer_class = RoomSerializer
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
+    def get_queryset(self):
+        # Get the authenticated user
+        user = self.request.user
+        # Return only the rooms the user is a participant of
+        return Room.objects.filter(participants=user)
+    
+    def perform_create(self, serializer):
+        room = serializer.save()
+        room.clean()  # Ensure that only two participants are added

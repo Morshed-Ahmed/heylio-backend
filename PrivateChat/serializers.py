@@ -14,7 +14,7 @@ class MessageSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'full_name', 'phone_number']  
+        fields = ['id', 'username']  
 
 class RoomSerializer(serializers.ModelSerializer):
     # content = MessageSerializer(many=True, source='messages')
