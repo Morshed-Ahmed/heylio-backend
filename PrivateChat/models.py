@@ -5,8 +5,23 @@ import random
 
 from django.core.exceptions import PermissionDenied
 
+# class Room(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     room_id = models.CharField(max_length=15, unique=True, editable=False)
+#     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='rooms')
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     def save(self, *args, **kwargs):
+#         if not self.room_id:
+#             # ১৫ ডিজিটের ইউনিক room_id তৈরি করা
+#             self.room_id = ''.join([str(random.randint(0, 9)) for _ in range(15)])
+#         super(Room, self).save(*args, **kwargs)
+
+#     def __str__(self):
+#         participants_names = ', '.join(user.username for user in self.participants.all())
+#         return f"Room {self.room_id} - Participants: {participants_names}"
+
 class Room(models.Model):
-    id = models.AutoField(primary_key=True)
     room_id = models.CharField(max_length=15, unique=True, editable=False)
     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='rooms')
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Room, Message
 from django.contrib.auth.models import User
+from Authentication.models import CustomUser
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -13,8 +14,9 @@ class MessageSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['id', 'username']  
+
 
 class RoomSerializer(serializers.ModelSerializer):
     # content = MessageSerializer(many=True, source='messages')

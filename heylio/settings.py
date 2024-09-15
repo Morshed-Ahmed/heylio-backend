@@ -157,3 +157,11 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
+
+
+# settings.py
+AUTH_USER_MODEL = 'Authentication.CustomUser'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # ডিফল্ট ব্যাকএন্ড
+    'Authentication.authenticate.UsernameOrPhoneBackend',  # কাস্টম ব্যাকএন্ড
+]
