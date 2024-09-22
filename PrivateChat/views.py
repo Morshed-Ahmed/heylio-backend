@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from .models import Room, Message
 from rest_framework.permissions import IsAuthenticated
 from .serializers import RoomSerializer
+from Authentication.models import CustomUser
+from rest_framework import serializers
 
 class RoomMessagesView(APIView):
     permission_classes = [IsAuthenticated]  # নিশ্চিত করুন যে ব্যবহারকারী লগইন করেছে
@@ -41,3 +43,5 @@ class RoomListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         room = serializer.save()
         room.clean()  # Ensure that only two participants are added
+
+
